@@ -26,9 +26,8 @@ class SettingLangAdmin(admin.ModelAdmin):
     list_filter = ['lang']
 
 admin.site.register(Setting,SettingtAdmin)
-admin.site.register(SettingLang,SettingLangAdmin)
 admin.site.register(ContactMessage,ContactMessageAdmin)
 admin.site.register(FAQ,FAQAdmin)
-admin.site.register(Language,LanguagesAdmin)
+
 
 
