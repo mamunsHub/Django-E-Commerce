@@ -69,14 +69,12 @@ class CommentAdmin(admin.ModelAdmin):
     readonly_fields = ('subject','comment','ip','user','product','rate','id')
 
 class ProductLangugaeAdmin(admin.ModelAdmin):
-    list_display = ['title','lang','slug']
+    list_display = ['title','slug']
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ['lang']
 
 class CategoryLangugaeAdmin(admin.ModelAdmin):
-    list_display = ['title','lang','slug']
+    list_display = ['title','slug']
     prepopulated_fields = {'slug': ('title',)}
-    list_filter = ['lang']
 
 admin.site.register(Category,CategoryAdmin2)
 admin.site.register(Product,ProductAdmin)

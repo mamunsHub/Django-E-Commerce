@@ -26,9 +26,7 @@ from user import views as UserViews
 from django.utils.translation import gettext_lazy as _
 
 urlpatterns = [
-    path('selectlanguage', views.selectlanguage, name='selectlanguage'),
     path('selectcurrency', views.selectcurrency, name='selectcurrency'),
-    path('savelangcur', views.savelangcur, name='savelangcur'),
     path('i18n/', include('django.conf.urls.i18n')),
 ]
 

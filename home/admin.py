@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from home.models import Setting, ContactMessage, FAQ, Language, SettingLang
+from home.models import Setting, ContactMessage, FAQ, SettingLang
 
 
 class SettingtAdmin(admin.ModelAdmin):
@@ -13,17 +13,12 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_filter = ['status']
 
 class FAQAdmin(admin.ModelAdmin):
-    list_display = ['question', 'answer','ordernumber','lang','status']
-    list_filter = ['status','lang']
-
-class LanguagesAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code','status']
+    list_display = ['question', 'answer','ordernumber','status']
     list_filter = ['status']
 
 
 class SettingLangAdmin(admin.ModelAdmin):
-    list_display = ['title', 'keywords','description','lang']
-    list_filter = ['lang']
+    list_display = ['title', 'keywords','description']
 
 admin.site.register(Setting,SettingtAdmin)
 admin.site.register(ContactMessage,ContactMessageAdmin)

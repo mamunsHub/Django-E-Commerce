@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.utils import translation
 
 from home.forms import SearchForm
-from home.models import Setting, ContactForm, ContactMessage, FAQ, SettingLang, Language
+from home.models import Setting, ContactForm, ContactMessage, FAQ, SettingLang
 from mysite import settings
 from product.models import Category, Product, Comment, ProductLang, CategoryLang
 from user.models import UserProfile
@@ -59,16 +59,6 @@ def index(request):
 
 
 
-
-def selectlanguage(request):
-    if request.method == 'POST':  # check post
-        cur_language = translation.get_language()
-        lasturl= request.META.get('HTTP_REFERER')
-        lang = request.POST['language']
-        translation.activate(lang)
-        request.session[translation.LANGUAGE_SESSION_KEY]=lang
-        #return HttpResponse(lang)
-        return HttpResponseRedirect("/"+lang)
 
 def aboutus(request):
     #category = categoryTree(0,'',currentlang)
@@ -214,14 +204,3 @@ def selectcurrency(request):
         request.session['currency'] = request.POST['currency']
     return HttpResponseRedirect(lasturl)
 
-@login_required(login_url='/login') # Check login
-def savelangcur(request):
-    lasturl = request.META.get('HTTP_REFERER')
-    curren_user = request.user
-    language=Language.objects.get(code=request.LANGUAGE_CODE[0:2])
-    #Save to User profile database
-    data = UserProfile.objects.get(user_id=curren_user.id )
-    data.language_id = language.id
-    data.currency_id = request.session['currency']
-    data.save()  # save data
-    return HttpResponseRedirect(lasturl)

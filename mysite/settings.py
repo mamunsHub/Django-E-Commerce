@@ -11,21 +11,42 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import environ
 from django.utils.translation import gettext_lazy as _
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+
+# Project Base Paths
+# project_root/api/config/settings.py - 2 = project_root/
+
+ROOT_DIR = environ.Path(__file__) - 2
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# Load OS environment variables
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+env = environ.Env()
+DJANGO_ENV = env.str('DJANGO_ENV', default='development')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '!l3!x0w-(f39+(@*a3a^8p@gf+o66e(@c#w1u13u*0=#-qpxbn'
+# Loading .env file from root directory to set environment.
+# OS Environment variables have precedence over variables defined in the .env file
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+env_file = ROOT_DIR('.env')
+env.read_env(env_file)
 
-ALLOWED_HOSTS = []
+if DJANGO_ENV == 'development':
+    # SECURITY WARNING: don't run with debug turned on in production!
+    # https://docs.djangoproject.com/en/3.0/ref/settings/#std:setting-DEBUG
+
+    DEBUG = True
+
+# https://docs.djangoproject.com/en/3.0/ref/settings/#secret-key
+
+SECRET_KEY = env.str('DJANGO_SECRET_KEY')
+
+# Hosts/domain names that are valid for this site
+# https://docs.djangoproject.com/en/3.0/ref/settings/#allowed-hosts
+
+ALLOWED_HOSTS = env.list('DJANGO_ALLOWED_HOSTS', default=[])
+USE_X_FORWARDED_HOST = env.bool('DJANGO_USE_X_FORWARDED_HOST', default=True)
+
 
 
 # Application definition
@@ -44,6 +65,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'mptt',
     'currencies',
+    'django.contrib.postgres',
 
 ]
 
@@ -83,13 +105,24 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('DATBASE_NAME', default='tasco'),
+        'USER': env.str('DATBASE_OWNER'),
+        'PASSWORD': env.str('DATBASE_PASSWORD'),
+        'HOST': env.str('DATBASE_HOST', default='localhost'),
+        'PORT': env.int('DATBASE_PORT', default=5432),
+        'CONN_MAX_AGE': env.int('DATBASE_CONN_MAX_AGE', default=0)
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators

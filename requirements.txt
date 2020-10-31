@@ -7,11 +7,13 @@ Django==3.0.7
 django-admin-thumbnails==0.2.5
 django-ckeditor==5.9.0
 django-currencies==0.10.1
+django-environ==0.4.5
 django-js-asset==1.2.2
 django-mptt==0.11.0
 idna==2.9
 jsonfield==2.1.1
 Pillow==7.1.2
+psycopg2-binary==2.8.6
 python-gettext==4.0
 pytz==2020.1
 requests==2.24.0
